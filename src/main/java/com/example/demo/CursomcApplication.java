@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -7,15 +9,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.domain.Categoria;
 import com.example.demo.domain.Cidade;
+import com.example.demo.domain.Cliente;
+import com.example.demo.domain.Endereco;
 import com.example.demo.domain.Estado;
 import com.example.demo.domain.Produto;
+import com.example.demo.domain.enums.TipoCliente;
 import com.example.demo.repository.CategoriaRepository;
 import com.example.demo.repository.CidadeRepository;
+import com.example.demo.repository.ClienteRepository;
+import com.example.demo.repository.EnderecoRepository;
 import com.example.demo.repository.EstadoRepository;
 import com.example.demo.repository.ProdutoRepository;
-
-
-import java.util.Arrays;
+import com.fasterxml.jackson.databind.ser.std.ArraySerializerBase;
 
 
 @SpringBootApplication
@@ -29,6 +34,10 @@ public class CursomcApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 
 	public static void main(String[] args) {
@@ -45,7 +54,7 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
-		Produto p3 = new Produto(null, "Mouse", 80.00);
+		Produto p3 = new Produto(null, "Mouse", 80.00);		
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
@@ -58,6 +67,8 @@ public class CursomcApplication implements CommandLineRunner {
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
+		/**/
+		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
 
@@ -70,6 +81,22 @@ public class CursomcApplication implements CommandLineRunner {
 
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		/**/
+		
+		Cliente cl1 = new Cliente(1,"Maria","bbb@bbb","04902953471",TipoCliente.PESSOAFISICA);
+		
+		cl1.getTelefones().addAll(Arrays.asList("88888888","99999999"));
+		
+		Endereco e1 = new Endereco(null,"Rua Flores","333","ap 1104","58036605",cl1,c1);
+		Endereco e2 = new Endereco(null,"Ave Matos","100","ap 1","58036605",cl1,c2);
+		
+		cl1.getEndereco().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cl1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
+		
 		
 	}
 	
